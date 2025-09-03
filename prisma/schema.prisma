@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  name      String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  projects  Project[]
+
+  @@map("users")
+}
+
+model Project {
+  id          String       @id @default(uuid())
+  name        String
+  description String?
+  apiKey      String       @unique @default(uuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  experiments Experiment[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([userId])
+  @@map("projects")
+}
+
+model Experiment {
+  id                String     @id @default(uuid())
+  projectId         String
+  project           Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name              String
+  description       String?
+  status            String     @default("draft") // draft, running, stopped, completed
+  trafficAllocation Json       @default("{\"control\": 50, \"variant\": 50}")
+  createdAt         DateTime   @default(now())
+  startedAt         DateTime?
+  stoppedAt         DateTime?
+  updatedAt         DateTime   @updatedAt
+  events            Event[]
+
+  @@index([projectId])
+  @@index([status])
+  @@map("experiments")
+}
+
+model Event {
+  id           String     @id @default(uuid())
+  experimentId String
+  experiment   Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+  userId       String
+  sessionId    String?
+  eventType    String     // assignment, conversion, pageview, custom
+  variant      String     // control, variant
+  metadata     Json?
+  properties   Json?
+  timestamp    DateTime   @default(now())
+
+  @@index([experimentId])
+  @@index([userId])
+  @@index([eventType])
+  @@index([variant])
+  @@index([timestamp])
+  @@map("events")
+}

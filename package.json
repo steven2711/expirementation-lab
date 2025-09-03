@@ -1,0 +1,53 @@
+{
+  "name": "experimentlab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A developer-first experimentation platform for A/B testing and feature flags",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm:dev:api\" \"npm:dev:dashboard\"",
+    "dev:api": "npm run dev -w @experimentlab/api",
+    "dev:dashboard": "npm run dev -w @experimentlab/dashboard",
+    "dev:sdk": "npm run dev -w @experimentlab/sdk",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "type-check": "npm run type-check --workspaces --if-present",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx packages/api/src/db/seed.ts",
+    "db:setup": "npm run db:generate && npm run db:push"
+  },
+  "devDependencies": {
+    "@prisma/client": "^5.7.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "concurrently": "^9.2.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.2.0",
+    "prisma": "^5.7.0",
+    "tsx": "^4.6.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/experimentlab.git"
+  },
+  "keywords": [
+    "ab-testing",
+    "experimentation",
+    "feature-flags",
+    "analytics"
+  ],
+  "author": "",
+  "license": "MIT"
+}
