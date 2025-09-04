@@ -7,7 +7,8 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "concurrently \"npm:dev:api\" \"npm:dev:dashboard\"",
+    "kill-ports": "lsof -ti:3000,4000 | xargs kill -9 2>/dev/null || echo 'Ports cleared'",
+    "dev": "npm run kill-ports && concurrently \"npm:dev:api\" \"npm:dev:dashboard\"",
     "dev:api": "npm run dev -w @experimentlab/api",
     "dev:dashboard": "npm run dev -w @experimentlab/dashboard",
     "dev:sdk": "npm run dev -w @experimentlab/sdk",

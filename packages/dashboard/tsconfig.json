@@ -20,7 +20,7 @@
     ],
     "paths": {
       "@/*": [
-        "./src/*"
+        "./*"
       ],
       "@experimentlab/shared/*": [
         "../shared/src/*"
@@ -28,7 +28,7 @@
     },
     "composite": true,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "noEmit": true
   },
   "include": [
     "next-env.d.ts",

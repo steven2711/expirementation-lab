@@ -1,8 +1,10 @@
 import axios, { AxiosError } from 'axios';
 import { getSession, signOut } from 'next-auth/react';
 
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: API_URL,
 });
 
 api.interceptors.request.use(async (config) => {
@@ -26,3 +28,4 @@ api.interceptors.response.use(
 );
 
 export default api;
+export { api };
